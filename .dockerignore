@@ -1,0 +1,7 @@
+docs/
+unraid-template/
+cfg/
+proj/
+*.md
+.git
+.github

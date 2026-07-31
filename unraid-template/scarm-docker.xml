@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>scarm-docker</Name>
+  <Repository>ghcr.io/gmoran1016/scarm-docker:latest</Repository>
+  <Registry>https://ghcr.io/gmoran1016/scarm-docker</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support/>
+  <Project>https://www.scarm.info/</Project>
+  <Overview>SCARM (Simple Computer Aided Railway Modeller) running under Wine, accessed from your browser. Unofficial community image; SCARM is freeware by its author. Open the WebUI to design track plans. Save your layouts to the /projects folder (Wine drive P:).</Overview>
+  <Category>Tools: HomeAutomation:</Category>
+  <WebUI>http://[IP]:[PORT:5800]/</WebUI>
+  <TemplateURL/>
+  <Icon>https://www.scarm.info/images/scarm_logo.png</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Description>SCARM in a browser via Wine. Design model railway track plans on Unraid.</Description>
+  <Networking>
+    <Mode>bridge</Mode>
+    <Publish>
+      <Port>
+        <HostPort>5800</HostPort>
+        <ContainerPort>5800</ContainerPort>
+        <Protocol>tcp</Protocol>
+      </Port>
+    </Publish>
+  </Networking>
+  <Config Name="WebUI Port" Target="5800" Default="5800" Mode="tcp" Description="Browser access to SCARM" Type="Port" Display="always" Required="true" Mask="false">5800</Config>
+  <Config Name="Config Storage" Target="/config" Default="/mnt/user/appdata/scarm-docker" Mode="rw" Description="Wine prefix and SCARM installation" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/scarm-docker</Config>
+  <Config Name="Projects" Target="/projects" Default="/mnt/user/scarm-projects" Mode="rw" Description="Your saved .scarm layout files (Wine drive P:)" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/scarm-projects</Config>
+  <Config Name="PUID" Target="USER_ID" Default="99" Mode="" Description="User ID" Type="Variable" Display="advanced" Required="false" Mask="false">99</Config>
+  <Config Name="PGID" Target="GROUP_ID" Default="100" Mode="" Description="Group ID" Type="Variable" Display="advanced" Required="false" Mask="false">100</Config>
+  <Config Name="TZ" Target="TZ" Default="America/New_York" Mode="" Description="Timezone" Type="Variable" Display="advanced" Required="false" Mask="false">America/New_York</Config>
+  <Config Name="Display Width" Target="DISPLAY_WIDTH" Default="1280" Mode="" Description="Web desktop width" Type="Variable" Display="advanced" Required="false" Mask="false">1280</Config>
+  <Config Name="Display Height" Target="DISPLAY_HEIGHT" Default="768" Mode="" Description="Web desktop height" Type="Variable" Display="advanced" Required="false" Mask="false">768</Config>
+</Container>

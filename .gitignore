@@ -1,0 +1,8 @@
+# Local build/test artifacts
+cfg/
+proj/
+*.log
+
+# OS junk
+.DS_Store
+Thumbs.db
