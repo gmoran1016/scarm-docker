@@ -5,3 +5,5 @@ proj/
 *.md
 .git
 .github
+.gitattributes
+.gitignore

@@ -41,6 +41,20 @@ Volumes:
                  (clean, easy-to-back-up, separate from Wine internals)
 ```
 
+## Base-image course-correction (2026-07-31, approved)
+
+The original base, `jlesage/baseimage-gui` (Debian), proved unworkable for Wine: it
+compiles its **own** fontconfig from source into custom directories and does not register
+it with dpkg. Wine's OpenGL/X libraries hard-depend on the distro `libfontconfig1`, forcing
+apt to install the distro `fontconfig` package on top, whose `fc-cache` postinst then fails
+against the base's custom setup — cascading to every downstream package (pango, Wine). The
+build was switched to **`lscr.io/linuxserver/baseimage-kasmvnc:ubuntunoble`** (LinuxServer
+KasmVNC, a full Ubuntu desktop base using standard distro packages), which hosts Wine
+cleanly. Consequent changes: web UI port is **3000/3001** (was 5800/5900); the launcher is
+`root/defaults/autostart` run as user `abc` (was `startapp.sh`); env vars use `TITLE` and
+LinuxServer `PUID/PGID`. Persistence model (`/config` prefix, `/projects` → drive `P:`),
+amd64-only scope, and GHCR/Actions publishing are unchanged.
+
 ## Implementation deviations (approved during planning)
 
 Two refinements were adopted over the sketch below, with the same runtime result:

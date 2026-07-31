@@ -1,50 +1,39 @@
 # syntax=docker/dockerfile:1
-# scarm-docker — SCARM under Wine on a browser-accessible base image.
-FROM jlesage/baseimage-gui:debian-12-v4
+# scarm-docker — SCARM under Wine on LinuxServer's KasmVNC base (browser desktop).
+FROM lscr.io/linuxserver/baseimage-kasmvnc:ubuntunoble
 
 # --- Version / source of the SCARM installer (override at build time if needed) ---
 ARG SCARM_VERSION=2.0.1
 ARG SCARM_INSTALLER_URL=https://www.scarm.info/SCARMsetup2_0_1.exe
 
-# --- App metadata + Wine environment ---
-ENV APP_NAME="SCARM" \
-    APP_VERSION="${SCARM_VERSION}" \
+# --- Page title + Wine environment ---
+ENV TITLE="SCARM" \
+    SCARM_VERSION="${SCARM_VERSION}" \
     WINEPREFIX=/config/wine \
     WINEARCH=win64 \
     WINEDEBUG=-all \
-    WINEDLLOVERRIDES="mscoree,mshtml=" \
-    DISPLAY_WIDTH=1280 \
-    DISPLAY_HEIGHT=768
+    WINEDLLOVERRIDES="mscoree,mshtml="
 
-# --- Install Wine (WineHQ stable), software OpenGL, and fetch the installer ---
+# --- Install Wine (WineHQ stable) + software OpenGL, and fetch the installer ---
 RUN set -eux; \
     dpkg --add-architecture i386; \
     apt-get update; \
-    # apt-utils must exist in its own transaction first, otherwise debconf cannot
-    # pre-configure later packages and fontconfig-config's postinst (db_get under
-    # set -e) fails, cascading to Wine. Pre-create the local fonts dir too.
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils; \
-    mkdir -p /usr/local/share/fonts; \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        wget ca-certificates gnupg cabextract xz-utils fonts-liberation \
+        wget ca-certificates gnupg cabextract \
         libgl1-mesa-dri libgl1-mesa-dri:i386 \
         libgl1:i386 libglx-mesa0:i386 mesa-utils; \
     mkdir -pm755 /etc/apt/keyrings; \
     wget -qO /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key; \
     wget -qNP /etc/apt/sources.list.d/ \
-        https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources; \
+        https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources; \
     apt-get update; \
-    # --no-install-recommends: Wine's hard deps are enough to run SCARM. The
-    # recommends pull a desktop-services tree (dbus, avahi, cups/ipp-usb, sane,
-    # gstreamer) that SCARM doesn't need and that fails to configure in a
-    # minimal container (e.g. useradd for the dbus messagebus user).
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends winehq-stable; \
     wget -qO /opt/SCARMsetup.exe "${SCARM_INSTALLER_URL}"; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*
 
-# --- App launcher (jlesage runs /startapp.sh as the app user) ---
-COPY rootfs/ /
-RUN chmod +x /startapp.sh
+# --- Launch SCARM instead of the base's default xterm (runs as user 'abc') ---
+COPY root/ /
+RUN chmod +x /defaults/autostart
 
-# Web UI is exposed on 5800 and VNC on 5900 by the base image.
+# Web UI on 3000 (http) / 3001 (https); /config volume provided by the base.
