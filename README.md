@@ -21,6 +21,7 @@ Windows model-railway track-design program — in your browser via Docker. Built
 ```bash
 docker run -d --name scarm \
   -p 3000:3000 \
+  --device /dev/dri:/dev/dri \
   -v /path/to/config:/config \
   -v /path/to/projects:/projects \
   ghcr.io/gmoran1016/scarm-docker:latest
@@ -28,6 +29,12 @@ docker run -d --name scarm \
 
 Open `http://<host>:3000`. On first launch the container installs SCARM (watch
 `docker logs -f scarm`); subsequent starts skip straight to the app.
+
+> **GPU passthrough (`--device /dev/dri`) is strongly recommended.** SCARM draws its
+> canvas with OpenGL; without a GPU it falls back to software rendering (llvmpipe) and the
+> canvas renders **black**. Passing the host GPU (an Intel iGPU is ideal and common on
+> Unraid) gives hardware OpenGL and correct rendering. On most hosts `/dev/dri` is
+> world-accessible; if yours is `root:video 0660`, also add the container to that group.
 
 Save/open your layouts on drive **P:** so they land in the `/projects` folder.
 

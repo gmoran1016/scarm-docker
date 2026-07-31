@@ -35,6 +35,7 @@
   <Config Name="WebUI (HTTPS)" Target="3001" Default="3001" Mode="tcp" Description="Optional HTTPS browser access" Type="Port" Display="advanced" Required="false" Mask="false">3001</Config>
   <Config Name="Config Storage" Target="/config" Default="/mnt/user/appdata/scarm-docker" Mode="rw" Description="Wine prefix and SCARM installation" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/scarm-docker</Config>
   <Config Name="Projects" Target="/projects" Default="/mnt/user/scarm-projects" Mode="rw" Description="Your saved .scarm layout files (Wine drive P:)" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/scarm-projects</Config>
+  <Config Name="GPU (/dev/dri)" Target="/dev/dri" Default="/dev/dri" Mode="" Description="Pass through the host GPU for hardware OpenGL. Strongly recommended: SCARM's canvas renders black under software rendering. Remove only if your server has no GPU." Type="Device" Display="always" Required="false" Mask="false">/dev/dri</Config>
   <Config Name="PUID" Target="PUID" Default="99" Mode="" Description="User ID" Type="Variable" Display="advanced" Required="false" Mask="false">99</Config>
   <Config Name="PGID" Target="PGID" Default="100" Mode="" Description="Group ID" Type="Variable" Display="advanced" Required="false" Mask="false">100</Config>
   <Config Name="TZ" Target="TZ" Default="America/New_York" Mode="" Description="Timezone" Type="Variable" Display="advanced" Required="false" Mask="false">America/New_York</Config>

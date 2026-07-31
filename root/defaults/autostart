@@ -9,7 +9,9 @@ export WINEDLLOVERRIDES="${WINEDLLOVERRIDES:-mscoree,mshtml=}"
 
 INSTALLER="/opt/SCARMsetup.exe"
 
-find_scarm() { find "$WINEPREFIX/drive_c" -iname 'SCARM.exe' 2>/dev/null | head -n1; }
+# The SCARM 2 binary is named scarm2.exe (folder "SCARM2"); match scarm*.exe so
+# future point releases keep working, excluding the setup/uninstaller.
+find_scarm() { find "$WINEPREFIX/drive_c" -iname 'scarm*.exe' 2>/dev/null | grep -ivE 'setup|unins' | head -n1; }
 
 # Install on first run (or retry if a previous install failed). The presence of
 # SCARM.exe is the idempotency guard, so a failed install just retries next start.
