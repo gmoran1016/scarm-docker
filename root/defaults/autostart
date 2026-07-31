@@ -46,7 +46,14 @@ maximize_scarm() {
     for _ in $(seq 1 60); do
         WID="$(xdotool search --name 'Simple Computer Aided' 2>/dev/null | head -n1)"
         if [ -n "$WID" ]; then
-            wmctrl -i -r "$WID" -b add,maximized_vert,maximized_horz 2>/dev/null || true
+            # SCARM restores its own saved window size shortly after mapping the
+            # window, which overrides an immediate maximize. Wait for it to settle,
+            # then maximize repeatedly so the final one sticks whenever SCARM is done.
+            sleep 4
+            for _ in 1 2 3 4; do
+                wmctrl -i -r "$WID" -b add,maximized_vert,maximized_horz 2>/dev/null || true
+                sleep 2
+            done
             return
         fi
         sleep 1

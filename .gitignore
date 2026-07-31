@@ -6,3 +6,7 @@ proj/
 # OS junk
 .DS_Store
 Thumbs.db
+
+# Test artifacts
+*.png
+.playwright-mcp/
