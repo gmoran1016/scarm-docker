@@ -34,7 +34,11 @@ RUN set -eux; \
     wget -qNP /etc/apt/sources.list.d/ \
         https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources; \
     apt-get update; \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --install-recommends winehq-stable; \
+    # --no-install-recommends: Wine's hard deps are enough to run SCARM. The
+    # recommends pull a desktop-services tree (dbus, avahi, cups/ipp-usb, sane,
+    # gstreamer) that SCARM doesn't need and that fails to configure in a
+    # minimal container (e.g. useradd for the dbus messagebus user).
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends winehq-stable; \
     wget -qO /opt/SCARMsetup.exe "${SCARM_INSTALLER_URL}"; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*
