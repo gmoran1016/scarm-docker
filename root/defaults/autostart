@@ -38,9 +38,25 @@ if [ -z "$SCARM_EXE" ]; then
     exec xterm -e "echo 'SCARM install failed. Check container logs and the README.'; exec bash"
 fi
 
+# Maximize SCARM's window once it appears. SCARM persists its last window size in
+# /config, so a session opened in a big browser is restored oversized in a smaller
+# one — overflowing the view and pushing dialogs off-screen. Maximizing makes it fit
+# the current KasmVNC desktop (which itself tracks the browser size).
+maximize_scarm() {
+    for _ in $(seq 1 60); do
+        WID="$(xdotool search --name 'Simple Computer Aided' 2>/dev/null | head -n1)"
+        if [ -n "$WID" ]; then
+            wmctrl -i -r "$WID" -b add,maximized_vert,maximized_horz 2>/dev/null || true
+            return
+        fi
+        sleep 1
+    done
+}
+
 echo "[scarm] Launching: $SCARM_EXE"
 # Relaunch if the user closes SCARM, so the desktop isn't left empty.
 while true; do
+    maximize_scarm &
     wine "$SCARM_EXE" || true
     sleep 2
 done

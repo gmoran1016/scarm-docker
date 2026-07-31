@@ -19,7 +19,7 @@ RUN set -eux; \
     dpkg --add-architecture i386; \
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        wget ca-certificates gnupg cabextract \
+        wget ca-certificates gnupg cabextract wmctrl xdotool \
         libgl1-mesa-dri libgl1-mesa-dri:i386 \
         libgl1:i386 libglx-mesa0:i386 mesa-utils; \
     mkdir -pm755 /etc/apt/keyrings; \
