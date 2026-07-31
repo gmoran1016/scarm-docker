@@ -2,6 +2,7 @@
 # otherwise the shell shebang breaks on Windows checkouts (\r\n -> "bad interpreter").
 *.sh                    text eol=lf
 root/defaults/autostart text eol=lf
+root/custom-cont-init.d/50-scarm-launcher text eol=lf
 Dockerfile              text eol=lf
 *.yml                   text eol=lf
 *.yaml                  text eol=lf

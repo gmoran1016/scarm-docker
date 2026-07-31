@@ -33,7 +33,10 @@ RUN set -eux; \
     rm -rf /var/lib/apt/lists/*
 
 # --- Launch SCARM instead of the base's default xterm (runs as user 'abc') ---
+# custom-cont-init.d/50-scarm-launcher force-syncs the launcher into /config on
+# every start, so image updates aren't shadowed by the stale /config copy that
+# LinuxServer seeds once and never refreshes.
 COPY root/ /
-RUN chmod +x /defaults/autostart
+RUN chmod +x /defaults/autostart /custom-cont-init.d/50-scarm-launcher
 
 # Web UI on 3000 (http) / 3001 (https); /config volume provided by the base.
