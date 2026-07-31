@@ -88,8 +88,12 @@ then rebuild. The SCARM setup wizard will appear in the browser on first launch;
 through it once and SCARM starts. (To recover a bad `/config`, delete the `/config/wine`
 folder and restart to reinstall cleanly.)
 
-**3D view is black or errors.** Software OpenGL (llvmpipe) is CPU-rendered and slow; give
-it a moment on large layouts. The 2D editor is unaffected.
+**Canvas is blank/white after SCARM reopens.** When you open the browser tab, SCARM
+renders fully. But SCARM draws its canvas with OpenGL and only fully repaints on a
+browser-driven resize — so if SCARM is closed and auto-relaunches, the canvas can stay
+blank until you **refresh the tab (F5)** or resize the browser window. This is a known
+limitation of running a Wine OpenGL app through a hardware-accelerated web desktop; the
+refresh restores it instantly. (The window auto-maximizes to fit your browser on launch.)
 
 ## Notes & limitations
 
