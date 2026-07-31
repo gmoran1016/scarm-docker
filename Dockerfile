@@ -21,8 +21,9 @@ RUN set -eux; \
     dpkg --add-architecture i386; \
     apt-get update; \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        wget ca-certificates gnupg cabextract xz-utils winbind \
-        libgl1-mesa-dri libgl1-mesa-dri:i386 mesa-utils; \
+        wget ca-certificates gnupg cabextract xz-utils winbind fonts-liberation \
+        libgl1-mesa-dri libgl1-mesa-dri:i386 \
+        libgl1:i386 libglx-mesa0:i386 mesa-utils; \
     mkdir -pm755 /etc/apt/keyrings; \
     wget -qO /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key; \
     wget -qNP /etc/apt/sources.list.d/ \

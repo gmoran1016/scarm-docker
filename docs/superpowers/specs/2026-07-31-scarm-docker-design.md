@@ -41,6 +41,16 @@ Volumes:
                  (clean, easy-to-back-up, separate from Wine internals)
 ```
 
+## Implementation deviations (approved during planning)
+
+Two refinements were adopted over the sketch below, with the same runtime result:
+- The SCARM installer is **downloaded at build time** by the Dockerfile (to
+  `/opt/SCARMsetup.exe`) rather than committed to the repo — cleaner repo, no
+  redistribution of the freeware installer, still no *runtime* dependency on scarm.info.
+- First-run install/launch lives in **`rootfs/startapp.sh`** (run as the app user, so the
+  Wine prefix is owned correctly) rather than a root-run `cont-init.d` script. Idempotency
+  keys off the presence of `SCARM.exe`, so a failed install retries on the next start.
+
 ## Repository layout
 
 ```

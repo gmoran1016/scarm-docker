@@ -58,6 +58,31 @@ docker build -t scarm-docker:dev .
 Bump SCARM version by editing the `SCARM_VERSION` / `SCARM_INSTALLER_URL` build args in
 the `Dockerfile` and the `2.0.1` tag in the workflow.
 
+## Troubleshooting
+
+**Container keeps restarting / logs say `SCARM.exe not found`.** The silent install
+didn't produce an executable under Wine. The launcher retries the install on every start
+(it keys off whether `SCARM.exe` exists, not a marker), so it won't get stuck — but if it
+keeps failing, switch to an interactive first-run install: edit `rootfs/startapp.sh` and
+change the install line
+
+```sh
+wine "$INSTALLER" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- || true
+```
+
+to
+
+```sh
+wine "$INSTALLER" /SP- || true
+```
+
+then rebuild. The SCARM setup wizard will appear in the browser on first launch; click
+through it once and SCARM starts. (To recover a bricked `/config` from an older build,
+delete the `/config/wine` folder and restart to reinstall cleanly.)
+
+**3D view is black or errors.** Software OpenGL (llvmpipe) is CPU-rendered and slow; give
+it a moment on large layouts. The 2D editor is unaffected.
+
 ## Notes & limitations
 
 - **amd64 only** (Unraid is x86_64; Wine on arm64 isn't supported here).
