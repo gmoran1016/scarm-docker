@@ -9,12 +9,13 @@ Windows model-railway track-design program — in your browser via Docker. Built
 
 ## What you get
 
-- SCARM's full 2D track-plan editor in a browser tab, on a lightweight KasmVNC desktop
+- SCARM's full track-plan editor in a browser tab, on a lightweight KasmVNC desktop
   ([LinuxServer.io](https://www.linuxserver.io/) base image).
-- The 3D view works via **software OpenGL** (llvmpipe) — usable but slow on large 3D
-  scenes; the 2D editor is responsive.
+- Renders through your host **GPU** (see below) — SCARM draws its canvas with OpenGL, so
+  a GPU (`/dev/dri`) is required; without it the canvas renders black.
 - Persistent Wine prefix + install (`/config`) and a clean folder for your layouts
   (`/projects`, shown inside SCARM as drive **P:**).
+- Auto-relaunches SCARM if you close it, so you never need to restart the container.
 
 ## Quick start (any Docker host)
 
