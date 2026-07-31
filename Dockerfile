@@ -20,6 +20,11 @@ ENV APP_NAME="SCARM" \
 RUN set -eux; \
     dpkg --add-architecture i386; \
     apt-get update; \
+    # apt-utils must exist in its own transaction first, otherwise debconf cannot
+    # pre-configure later packages and fontconfig-config's postinst (db_get under
+    # set -e) fails, cascading to Wine. Pre-create the local fonts dir too.
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils; \
+    mkdir -p /usr/local/share/fonts; \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         wget ca-certificates gnupg cabextract xz-utils fonts-liberation \
         libgl1-mesa-dri libgl1-mesa-dri:i386 \
