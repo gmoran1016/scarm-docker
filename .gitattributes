@@ -1,0 +1,9 @@
+# Files that run inside the Linux container MUST keep LF line endings,
+# otherwise the shell shebang breaks on Windows checkouts (\r\n -> "bad interpreter").
+*.sh        text eol=lf
+Dockerfile  text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.xml       text eol=lf
+.gitignore  text eol=lf
+.dockerignore text eol=lf
